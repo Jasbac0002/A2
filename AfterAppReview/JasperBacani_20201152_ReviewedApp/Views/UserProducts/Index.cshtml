@@ -1,0 +1,77 @@
+﻿@model IEnumerable<NZWSO.Models.UserProducts>
+
+@{
+    ViewData["Title"] = "Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <h1 class="text-center">Customer Product Records</h1>
+}
+else
+{
+    <h1>Customer Records</h1>
+    //<h1>Customer Records : @User.Identity?.Name</h1>
+
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    Customer/s@*@Html.DisplayNameFor(model => model.User)*@
+                </th>
+            }
+            <th>
+                Product/s@*@Html.DisplayNameFor(model => model.Product)*@
+            </th>
+            <th>
+                Price@*@Html.DisplayNameFor(model => model.Product)*@
+            </th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Email)
+                    </td>
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price)
+                </td>
+                <td>
+                    @Html.ActionLink("Remove", "Delete", "UserProducts", new { productId = @item.ProductId, userId = item.UserId })
+                </td>
+            </tr>
+        }
+
+        @*@if(!Model.Any() && (User.IsInRole("Admin")))
+        {
+            <tr>
+                <td>No Customer Records Found!</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>This Customer has not bought a shoe yet!</td>
+            </tr>
+        }*@
+
+    </tbody>
+</table>
